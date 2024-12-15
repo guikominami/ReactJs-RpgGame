@@ -1,14 +1,13 @@
 /* eslint-disable react/prop-types */
 import { useState, useRef } from "react";
 import "./Player.css";
+import Button from "./basic/Button";
 
 export default function Player() {
   const playerName = useRef();
   const playerClass = useRef();
 
   const [isEditing, setIsEditing] = useState(false);
-  const [playerNameData, setPlayerName] = useState("Player");
-
   const [playerData, setPlayerData] = useState({
     name: "Player",
     class: "Undefined",
@@ -30,8 +29,6 @@ export default function Player() {
       return;
     }
 
-    setPlayerName(playerName.current.value);
-
     setPlayerData({
       ...playerData,
       name: playerName.current.value,
@@ -44,45 +41,61 @@ export default function Player() {
     playerClass.current.value = "";
   }
 
-  let editingName = <h2>{playerNameData}</h2>;
-  let editingClass = (
-    <span>
-      <b>Class:</b> {playerData.class}
-    </span>
-  );
-  let editingPower = (
-    <span>
-      <b>Power:</b> {playerData.power}
-    </span>
-  );
-  let editingDefense = (
-    <span>
-      <b>Defense:</b> {playerData.defense}
-    </span>
-  );
+  let editingName = playerData.name;
+  let editingClass = playerData.class;
+  let editingPower = playerData.power;
+  let editingDefense = playerData.defense;
   let textButton = "Edit";
 
   if (isEditing) {
     editingName = (
-      <input type="text" placeholder="Name" ref={playerName} />
+      <input
+        type="text"
+        placeholder="Name"
+        defaultValue={playerData.name}
+        ref={playerName}
+      />
     );
     editingClass = (
-      <input type="text" placeholder="Class" ref={playerClass} />
+      <input
+        type="text"
+        placeholder="Class"
+        defaultValue={playerData.class}
+        ref={playerClass}
+      />
     );
-    editingPower = <input type="text" placeholder="Power" />;
-    editingDefense = <input type="text" placeholder="Defense" />;
+    editingPower = (
+      <input
+        type="text"
+        placeholder="Power"
+        defaultValue={playerData.power}
+      />
+    );
+    editingDefense = (
+      <input
+        type="text"
+        placeholder="Defense"
+        defaultValue={playerData.defense}
+      />
+    );
     textButton = "Save";
   }
 
   return (
     <section className="player">
       <div className="player_data">
-        {editingName}
-        {editingClass}
-        {editingPower}
-        {editingDefense}
-        <button onClick={handleClick}>{textButton}</button>
+        <h2>{editingName}</h2>
+        <span>
+          <b>Class: </b> {editingClass}
+        </span>
+        <span>
+          <b>Power:</b> {editingPower}
+        </span>
+        <span>
+          <b>Defense:</b> {editingDefense}
+        </span>
       </div>
+      <Button onClick={handleClick}>{textButton}</Button>
     </section>
   );
 }
