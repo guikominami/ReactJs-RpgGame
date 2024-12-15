@@ -24,6 +24,30 @@ button:hover {
   color: rgb(12, 12, 12);
 }
 
+.start{
+  color: rgb(255, 255, 255);
+  background-color: #2c736a;
+  text-transform: uppercase;
+  width: 8rem;
+}
+
+.start:hover {
+  background-color: #329285;
+  color: rgb(255, 255, 255);
+}
+
+.end{
+  color: rgb(255, 255, 255);
+  background-color: #2c736a;
+  text-transform: uppercase;
+  width: 8rem;
+}
+
+.end:hover {
+  background-color: #329285;
+  color: rgb(255, 255, 255);
+}
+
 .theme {
   text-transform: uppercase;
 }

@@ -3,7 +3,8 @@ import { useState, useRef } from "react";
 import "./Player.css";
 import Button from "./basic/Button";
 
-export default function Player() {
+export default function Player({ onGameStart }) {
+  console.log(onGameStart);
   const playerName = useRef();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -80,7 +81,7 @@ export default function Player() {
           <b>Defense:</b> {editingDefense}
         </span>
       </div>
-      {!isGameStarted && (
+      {!onGameStart && (
         <Button onClick={handleClick}>{textButton}</Button>
       )}
     </section>
