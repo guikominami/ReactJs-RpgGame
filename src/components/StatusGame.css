@@ -1,0 +1,16 @@
+.status-game{
+  width: 39rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
+  margin: 0rem auto;
+  background: linear-gradient(#4df8df, #4df0f8);
+  color: #221c18;
+  box-shadow: 0 2px 8px rgba(35, 34, 34, 0.6);
+  border-radius: 6px;
+}
+
+.main-status-game{
+  margin-bottom: 1rem;
+}
