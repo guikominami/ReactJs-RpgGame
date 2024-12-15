@@ -1,12 +1,12 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import Button from "./Button";
 
 import "./DropDownQuiz.css";
 
-export default function DropDownQuiz() {
+export default function DropDownQuiz({ onthemeSelected }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [quizTheme, setQuizTheme] = useState("QUIZ THEME:");
-  const [isThemeSelected, setIsThemeSelected] = useState(false);
+  const [quizTheme, setQuizTheme] = useState("Quiz theme");
 
   let optionsElement = (
     <ul>
@@ -45,18 +45,16 @@ export default function DropDownQuiz() {
     </ul>
   );
 
-  let buttonStartElement = <Button>Start</Button>;
-
   function handleClick() {
     setIsOpen((opening) => !opening);
-    setQuizTheme("QUIZ THEME:");
-    if (isThemeSelected) setIsThemeSelected((selected) => !selected);
+    setQuizTheme("Quiz theme:");
+    onthemeSelected(false);
   }
 
   function handleSelectOption(option) {
     setQuizTheme(option);
     setIsOpen((opening) => !opening);
-    setIsThemeSelected((selected) => !selected);
+    onthemeSelected(true);
   }
 
   return (
@@ -67,7 +65,6 @@ export default function DropDownQuiz() {
         </Button>
         {isOpen && optionsElement}
       </div>
-      {isThemeSelected && buttonStartElement}
     </>
   );
 }

@@ -1,32 +1,20 @@
-import Button from "./basic/Button";
-import DropDownQuiz from "./basic/DropDownQuiz";
-
 import "./StatusGame.css";
-
-let elementStatus = (
-  <>
-    <h2>Status Game</h2>
-    <p>Player 1 attacked player 2</p>
-    <p>Pergunta: O que é isso?</p>
-    <p>Opções: 1- 2- 3- </p>
-    <p>Resposta correta</p>
-  </>
-);
 
 export default function StatusGame() {
   return (
-    <>
-      <section className="status-game">
-        <div className="main-status-game">
-          <span>Select the Quiz question theme:</span>
-          <DropDownQuiz />
-        </div>
-      </section>
-      {/* <Button>START GAME</Button> */}
-    </>
-    // <section className="status-game">
-
-    //   <div className="main-status-game"></div>
-    // </section>
+    <section className="status-game">
+      <div className="status-game-column">
+        <h2>Game Status</h2>
+        <span>Player 1 attacked player 2</span>
+        <span>3 acertos de 3 respostas</span>
+        <span>Dice from 6 to 5</span>
+      </div>
+      <div className="status-game-column">
+        <h2>Question</h2>
+        <span>Pergunta: O que é isso?</span>
+        <span>Opções: 1- 2- 3- </span>
+        <span>Resposta correta</span>
+      </div>
+    </section>
   );
 }

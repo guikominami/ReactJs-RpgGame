@@ -16,7 +16,7 @@ body {
 }
 
 #content {
-  max-width: 50rem;
+  max-width: 46rem;
   margin: 1rem auto;
   padding: 1.5rem;
   background: radial-gradient(#0b201d, #021619);
@@ -53,9 +53,10 @@ input, button {
 }
 
 #main-area {
-  max-width: 40rem;
+  max-width: 36rem;
   margin: auto;
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
+  justify-content: center;
 }

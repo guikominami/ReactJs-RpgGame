@@ -1,7 +1,6 @@
 .dropdown-area{
   display: flex;
   align-items: center;
-  margin-top: 0.5rem;
   align-items:end;
 }
 
@@ -15,7 +14,7 @@
 
 .dropdown-area li{
   float: left;
-  margin-left: 1rem;
+  margin-left: 0.5rem;
 }
 
 

@@ -8,10 +8,20 @@ button {
   cursor: pointer;
 }
 
+button:hover {
+  background: #002a25;
+  color: #ffffff;
+}
+
 .options {
   color: black;
   background-color: #54a399;
   text-transform: uppercase;
+}
+
+.options:hover {
+  background-color: #329285;
+  color: rgb(12, 12, 12);
 }
 
 .theme {

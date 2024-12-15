@@ -1,0 +1,32 @@
+.setup-game{
+  width: 34rem;
+  height: 4rem;
+  background: linear-gradient(#4df8df, #4df0f8);
+  color: #221c18;
+  box-shadow: 0 2px 8px rgba(35, 34, 34, 0.6);
+  border-radius: 6px;;
+}
+
+/* itens na horizontal na ponta
+.main-status-game{
+  display: flex;
+  flex-direction: c;
+  justify-content: space-between;
+  width: 100%;
+  margin-left: 2rem;
+  margin-right: 5rem;
+} */
+
+.select-quiz{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-around; 
+  align-items: center;
+  height: 100%;
+} 
+
+.main-status-game h2{
+  text-transform: uppercase;
+
+} 

@@ -5,12 +5,11 @@ import Button from "./basic/Button";
 
 export default function Player() {
   const playerName = useRef();
-  const playerClass = useRef();
 
   const [isEditing, setIsEditing] = useState(false);
+  const [isGameStarted, setIsGameStarted] = useState(false);
   const [playerData, setPlayerData] = useState({
     name: "Player",
-    class: "Undefined",
     power: 10,
     defense: 10,
   });
@@ -32,17 +31,14 @@ export default function Player() {
     setPlayerData({
       ...playerData,
       name: playerName.current.value,
-      class: playerClass.current.value,
       power: 10,
       defense: 10,
     });
 
     playerName.current.value = "";
-    playerClass.current.value = "";
   }
 
   let editingName = playerData.name;
-  let editingClass = playerData.class;
   let editingPower = playerData.power;
   let editingDefense = playerData.defense;
   let textButton = "Edit";
@@ -54,14 +50,6 @@ export default function Player() {
         placeholder="Name"
         defaultValue={playerData.name}
         ref={playerName}
-      />
-    );
-    editingClass = (
-      <input
-        type="text"
-        placeholder="Class"
-        defaultValue={playerData.class}
-        ref={playerClass}
       />
     );
     editingPower = (
@@ -86,16 +74,15 @@ export default function Player() {
       <div className="player_data">
         <h2>{editingName}</h2>
         <span>
-          <b>Class: </b> {editingClass}
-        </span>
-        <span>
           <b>Power:</b> {editingPower}
         </span>
         <span>
           <b>Defense:</b> {editingDefense}
         </span>
       </div>
-      <Button onClick={handleClick}>{textButton}</Button>
+      {!isGameStarted && (
+        <Button onClick={handleClick}>{textButton}</Button>
+      )}
     </section>
   );
 }
