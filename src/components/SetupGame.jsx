@@ -7,7 +7,7 @@ import "./SetupGame.css";
 export default function SetupGame({ onGameStart }) {
   const [isThemeSelected, setIsThemeSelected] = useState(false);
   const [isGameStarted, setIsGameStarted] = useState(false);
-  console.log(isGameStarted);
+
   let buttonStartElement = (
     <>
       <Button
@@ -20,7 +20,8 @@ export default function SetupGame({ onGameStart }) {
   );
 
   function handleStartGame() {
-    onGameStart(setIsGameStarted((start) => !start));
+    setIsGameStarted((start) => !start);
+    onGameStart();
   }
 
   return (

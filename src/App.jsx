@@ -2,16 +2,21 @@ import { useState } from "react";
 import Player from "./components/Player";
 import SetupGame from "./components/SetupGame";
 import StatusGame from "./components/StatusGame";
-const isGameStarted = 0;
+
 function App() {
+  const [isGameStarted, setIsGameStarted] = useState(false);
   console.log("app", isGameStarted);
+  function handleGameStart() {
+    setIsGameStarted((value) => !value);
+  }
+
   return (
     <>
       <div id="main-area">
-        <Player />
-        <Player />
-        <SetupGame onGameStart={isGameStarted} />
-        <StatusGame />
+        <Player onGameStart={isGameStarted} />
+        <Player onGameStart={isGameStarted} />
+        <SetupGame onGameStart={handleGameStart} />
+        {isGameStarted && <StatusGame />}
       </div>
     </>
   );

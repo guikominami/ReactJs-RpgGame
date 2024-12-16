@@ -8,11 +8,11 @@ export default function Player({ onGameStart }) {
   const playerName = useRef();
 
   const [isEditing, setIsEditing] = useState(false);
-  const [isGameStarted, setIsGameStarted] = useState(false);
   const [playerData, setPlayerData] = useState({
     name: "Player",
     power: 10,
     defense: 10,
+    health: 100,
   });
 
   function handleClick() {
@@ -70,6 +70,16 @@ export default function Player({ onGameStart }) {
     textButton = "Save";
   }
 
+  let healthElement = (
+    <span>
+      <b>Health:</b> {playerData.health}
+    </span>
+  );
+
+  let buttonEditElement = (
+    <Button onClick={handleClick}>{textButton}</Button>
+  );
+
   return (
     <section className="player">
       <div className="player_data">
@@ -80,10 +90,9 @@ export default function Player({ onGameStart }) {
         <span>
           <b>Defense:</b> {editingDefense}
         </span>
+        {onGameStart && healthElement}
       </div>
-      {!onGameStart && (
-        <Button onClick={handleClick}>{textButton}</Button>
-      )}
+      {!onGameStart && buttonEditElement}
     </section>
   );
 }
