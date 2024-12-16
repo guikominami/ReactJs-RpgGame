@@ -1,12 +1,21 @@
 .status-game{
-  max-width: 36rem;
+  width: 34rem;
+  height: 12rem;
   display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  justify-content: center;
+  justify-content: start;
+  flex-direction: row;
+  padding: 1.5rem;
+  background: linear-gradient(#4df8df, #4df0f8);
+  color: #221c18;
+  box-shadow: 0 2px 8px rgba(35, 34, 34, 0.6);
+  border-radius: 6px;
 }
 
 .status-game-column{
+  
+}
+
+/* .status-game-column{
   width: 16rem;
   height: 12rem;
   display: flex;
@@ -19,11 +28,24 @@
   box-shadow: 0 2px 8px rgba(35, 34, 34, 0.6);
   border-radius: 6px;
   background-color: aliceblue;
-}
+} */
 
 .status-game-column h2{
   margin: 0;
   text-transform: uppercase;
-  margin-bottom: 0.5rem;
-  align-self: flex-start;
 }
+
+.status-game-column span{
+  padding-bottom: 0.1rem;
+}
+
+.status-game-column button{
+  text-transform: uppercase;
+  margin-right: 0.3rem;
+}
+
+.question-options{
+  align-items: center;
+  align-content: center;
+}
+

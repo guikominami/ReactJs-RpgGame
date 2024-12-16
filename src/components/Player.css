@@ -1,13 +1,13 @@
 
 .player {
   width: 16rem;
-  height: 12rem;
+  height: 11rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  margin-top: 2rem;
+  justify-content: start;
+  padding: 1rem 2rem 0 2rem;
+  margin-top: 1rem;
   background: linear-gradient(#4df8df, #4df0f8);
   color: #221c18;
   box-shadow: 0 2px 8px rgba(35, 34, 34, 0.6);

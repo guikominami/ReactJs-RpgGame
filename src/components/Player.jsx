@@ -4,7 +4,6 @@ import "./Player.css";
 import Button from "./basic/Button";
 
 export default function Player({ onGameStart }) {
-  console.log(onGameStart);
   const playerName = useRef();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -24,7 +23,6 @@ export default function Player({ onGameStart }) {
   }
 
   function SaveData() {
-    console.log("save");
     if (playerName.current.value === "") {
       return;
     }

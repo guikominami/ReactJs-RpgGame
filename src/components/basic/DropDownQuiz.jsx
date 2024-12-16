@@ -60,7 +60,11 @@ export default function DropDownQuiz({ onthemeSelected }) {
   return (
     <>
       <div className="dropdown-area">
-        <Button className="theme" onClick={handleClick}>
+        <Button
+          className="theme"
+          disabled={isOpen}
+          onClick={handleClick}
+        >
           {quizTheme}
         </Button>
         {isOpen && optionsElement}
@@ -68,3 +72,5 @@ export default function DropDownQuiz({ onthemeSelected }) {
     </>
   );
 }
+
+<button disabled="false"></button>;
