@@ -28,44 +28,33 @@ function App() {
   //   );
   // }
 
-  function handleAddNewPlayer(playerData) {
-    console.log("receba", playerData);
+  console.log("app", playerData);
 
-    //NAO é para incluir o valor mais e sim atualizar
-    setPlayerData((prevState) => {
-      const newData = {
-        playerData,
-      };
-      return {
-        ...prevState,
-        players: [...prevState.players, newData],
-      };
-    });
+  function handleAddNewPlayer(player) {
+    console.log("receba", player);
+
+    const oldPlayerData = [...playerData];
+    const playerToUpdate = oldPlayerData.find(
+      (p) => p.id === player.id
+    );
+    playerToUpdate.name = player.name;
+    setPlayerData(oldPlayerData);
   }
-
-  // console.log(playerData);
 
   function handleGameStart() {
     setIsGameStarted((value) => !value);
-  }
-
-  function selectDataPlayer(idBusca) {
-    const selectedPlayer = playerData.find(
-      (player) => player.id === idBusca
-    );
-    return selectedPlayer;
   }
 
   return (
     <>
       <div id="main-area">
         <Player
-          playerData={selectDataPlayer(1)}
+          playerData={playerData[0]}
           onGameStart={isGameStarted}
           onAddNewPlayer={handleAddNewPlayer}
         />
         <Player
-          playerData={selectDataPlayer(2)}
+          playerData={playerData[1]}
           onGameStart={isGameStarted}
           onAddNewPlayer={handleAddNewPlayer}
         />

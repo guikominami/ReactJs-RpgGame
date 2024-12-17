@@ -45,6 +45,7 @@ export default function Player({
       name: playerName.current.value,
       power: 10,
       defense: 10,
+      health: 100,
     });
 
     playerName.current.value = "";
