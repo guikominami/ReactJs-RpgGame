@@ -1,6 +1,6 @@
 .status-game{
   width: 34rem;
-  height: 12rem;
+  height: 13rem;
   display: flex;
   justify-content: start;
   flex-direction: row;
@@ -37,6 +37,11 @@
 
 .status-game-column span{
   padding-bottom: 0.1rem;
+}
+
+.status-game-column p{
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem
 }
 
 .status-game-column button{

@@ -3,16 +3,22 @@ import { useState, useRef } from "react";
 import "./Player.css";
 import Button from "./basic/Button";
 
-export default function Player({ onGameStart }) {
+export default function Player({
+  playerData,
+  onGameStart,
+  onAddNewPlayer,
+}) {
   const playerName = useRef();
 
+  console.log("player", playerData);
+
   const [isEditing, setIsEditing] = useState(false);
-  const [playerData, setPlayerData] = useState({
-    name: "Player",
-    power: 10,
-    defense: 10,
-    health: 100,
-  });
+  // const [playerData, setPlayerData] = useState({
+  //   name: "Player",
+  //   power: 10,
+  //   defense: 10,
+  //   health: 100,
+  // });
 
   function handleClick() {
     if (isEditing) {
@@ -27,8 +33,15 @@ export default function Player({ onGameStart }) {
       return;
     }
 
-    setPlayerData({
-      ...playerData,
+    // setPlayerData({
+    //   ...playerData,
+    //   name: playerName.current.value,
+    //   power: 10,
+    //   defense: 10,
+    // });
+
+    onAddNewPlayer({
+      id: playerId,
       name: playerName.current.value,
       power: 10,
       defense: 10,
@@ -40,6 +53,7 @@ export default function Player({ onGameStart }) {
   let editingName = playerData.name;
   let editingPower = playerData.power;
   let editingDefense = playerData.defense;
+  let playerId = playerData.id;
   let textButton = "Edit";
 
   if (isEditing) {

@@ -5,7 +5,7 @@ import "./StatusGame.css";
 import questions from "../assets/questionsData.json";
 
 // export default function StatusGame({ player, onNextTurn }) {
-export default function StatusGame() {
+export default function StatusGame({ attack, defense }) {
   const [isQuestion, setIsQuestion] = useState(true);
   const [activePlayer, setActivePlayer] = useState(1);
   const [questionActive, setQuestionActive] = useState(
@@ -15,6 +15,9 @@ export default function StatusGame() {
     quantity: 0,
     correct: 0,
   });
+
+  console.log("quantity answers", quantityAnswers.quantity);
+  console.log("correct answers", quantityAnswers.correct);
 
   function handleNextTurnClick() {
     //verificar se é necessário voltar ao app
@@ -26,7 +29,11 @@ export default function StatusGame() {
       curActivePlayer === 1 ? 2 : 1
     );
 
-    // {questions.map((item) => (
+    setQuantityAnswers({
+      ...quantityAnswers,
+      quantity: 0,
+      correct: 0,
+    });
   }
 
   function handleQuestionOption(option) {
@@ -50,9 +57,6 @@ export default function StatusGame() {
 
     setQuestionActive(randomNumberInRange(1, questions.length));
 
-    console.log("quantity answers", quantityAnswers.quantity);
-    console.log("correct answers", quantityAnswers.correct);
-
     if (quantityAnswers.quantity === 2) {
       setIsQuestion(false);
     }
@@ -60,6 +64,24 @@ export default function StatusGame() {
 
   function randomNumberInRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function rollDice() {
+    let correctAnswers = quantityAnswers.correct;
+    let diceResult = randomNumberInRange(1, 6);
+    let elementResult = (
+      <>
+        <p>
+          Dice roller = {diceResult} x {correctAnswers} (correct
+          answers) = {diceResult * correctAnswers}
+        </p>
+        <p>
+          Attack = {diceResult} * {attack}{" "}
+        </p>
+      </>
+    );
+
+    return elementResult;
   }
 
   return (
@@ -96,6 +118,7 @@ export default function StatusGame() {
                 You answered {quantityAnswers.correct} correct from{" "}
                 {quantityAnswers.quantity} questions!
               </p>
+              {rollDice()}
               <Button onClick={handleNextTurnClick}>Next Turn</Button>
             </div>
           </>
