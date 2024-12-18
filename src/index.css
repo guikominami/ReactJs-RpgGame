@@ -58,6 +58,6 @@ input, button {
   margin: auto;
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: 1.5rem;
   justify-content: center;
 }

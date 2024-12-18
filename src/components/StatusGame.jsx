@@ -4,10 +4,13 @@ import Button from "./basic/Button";
 import "./StatusGame.css";
 import questions from "../assets/questionsData.json";
 
-// export default function StatusGame({ player, onNextTurn }) {
-export default function StatusGame({ attack, defense }) {
+export default function StatusGame({
+  activePlayer,
+  onNextTurn,
+  power,
+  defense,
+}) {
   const [isQuestion, setIsQuestion] = useState(true);
-  const [activePlayer, setActivePlayer] = useState(1);
   const [questionActive, setQuestionActive] = useState(
     randomNumberInRange(1, questions.length)
   );
@@ -15,19 +18,18 @@ export default function StatusGame({ attack, defense }) {
     quantity: 0,
     correct: 0,
   });
+  const [resultQuestions, setResultQuestions] = useState(0);
+
+  console.log("activePlayer", activePlayer);
+
+  console.log("power", power);
+  console.log("defense", defense);
 
   console.log("quantity answers", quantityAnswers.quantity);
   console.log("correct answers", quantityAnswers.correct);
 
   function handleNextTurnClick() {
-    //verificar se é necessário voltar ao app
-    // onNextTurn();
-
     setIsQuestion(true);
-
-    setActivePlayer((curActivePlayer) =>
-      curActivePlayer === 1 ? 2 : 1
-    );
 
     setQuantityAnswers({
       ...quantityAnswers,
@@ -69,17 +71,25 @@ export default function StatusGame({ attack, defense }) {
   function rollDice() {
     let correctAnswers = quantityAnswers.correct;
     let diceResult = randomNumberInRange(1, 6);
+    let result = diceResult * power;
     let elementResult = (
       <>
+        {!correctAnswers == 0 && (
+          <p>
+            Dice roller = {diceResult} x {correctAnswers} (correct
+            answers) = {diceResult * correctAnswers}
+          </p>
+        )}
+        {correctAnswers == 0 && (
+          <p>Dice roller = {diceResult} (NO MULTIPLIER)</p>
+        )}
         <p>
-          Dice roller = {diceResult} x {correctAnswers} (correct
-          answers) = {diceResult * correctAnswers}
-        </p>
-        <p>
-          Attack = {diceResult} * {attack}{" "}
+          Attack = {diceResult} * {power} = {result}
         </p>
       </>
     );
+
+    setResultQuestions(result);
 
     return elementResult;
   }

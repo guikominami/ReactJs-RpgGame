@@ -9,16 +9,12 @@ export default function Player({
   onAddNewPlayer,
 }) {
   const playerName = useRef();
+  const playerPower = useRef();
+  const playerDefense = useRef();
 
-  console.log("player", playerData);
+  // console.log("player", playerData);
 
   const [isEditing, setIsEditing] = useState(false);
-  // const [playerData, setPlayerData] = useState({
-  //   name: "Player",
-  //   power: 10,
-  //   defense: 10,
-  //   health: 100,
-  // });
 
   function handleClick() {
     if (isEditing) {
@@ -33,28 +29,23 @@ export default function Player({
       return;
     }
 
-    // setPlayerData({
-    //   ...playerData,
-    //   name: playerName.current.value,
-    //   power: 10,
-    //   defense: 10,
-    // });
-
     onAddNewPlayer({
       id: playerId,
       name: playerName.current.value,
-      power: 10,
-      defense: 10,
-      health: 100,
+      power: playerPower.current.value,
+      defense: playerDefense.current.value,
     });
 
     playerName.current.value = "";
+    playerPower.current.value = "";
+    playerDefense.current.value = "";
   }
 
   let editingName = playerData.name;
   let editingPower = playerData.power;
   let editingDefense = playerData.defense;
   let playerId = playerData.id;
+  let playerActive = playerData.active;
   let textButton = "Edit";
 
   if (isEditing) {
@@ -71,6 +62,7 @@ export default function Player({
         type="text"
         placeholder="Power"
         defaultValue={playerData.power}
+        ref={playerPower}
       />
     );
     editingDefense = (
@@ -78,15 +70,35 @@ export default function Player({
         type="text"
         placeholder="Defense"
         defaultValue={playerData.defense}
+        ref={playerDefense}
       />
     );
     textButton = "Save";
   }
 
-  let healthElement = (
+  let healthElement = <></>;
+
+  let attackElement = (
     <span>
-      <b>Health:</b> {playerData.health}
+      <b>Attack:</b> {playerData.attack}
     </span>
+  );
+
+  let blockElement = (
+    <span>
+      <b>Block:</b> {playerData.block}
+    </span>
+  );
+
+  let questionsResultElement = (
+    <>
+      <span>
+        <b>Dice:</b> {playerData.block}
+      </span>
+      <span>
+        <b>Multiplier:</b> {playerData.block}
+      </span>
+    </>
   );
 
   let buttonEditElement = (
@@ -103,7 +115,12 @@ export default function Player({
         <span>
           <b>Defense:</b> {editingDefense}
         </span>
+        <span>
+          <b>Health:</b> {playerData.health}
+        </span>
         {onGameStart && healthElement}
+        {onGameStart && (playerActive ? attackElement : blockElement)}
+        {onGameStart && questionsResultElement}
       </div>
       {!onGameStart && buttonEditElement}
     </section>
