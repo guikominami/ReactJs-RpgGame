@@ -3,30 +3,21 @@ import { useState } from "react";
 import Button from "./basic/Button";
 import "./StatusGame.css";
 import questions from "../assets/questionsData.json";
+import randomNumber from "../components/basic/RandomNumber";
 
-export default function StatusGame({
-  activePlayer,
-  onNextTurn,
-  power,
-  defense,
-}) {
+export default function StatusGame({ activePlayer, onNextTurn }) {
   const [isQuestion, setIsQuestion] = useState(true);
   const [questionActive, setQuestionActive] = useState(
-    randomNumberInRange(1, questions.length)
+    randomNumber(1, questions.length)
   );
   const [quantityAnswers, setQuantityAnswers] = useState({
     quantity: 0,
     correct: 0,
   });
-  const [resultQuestions, setResultQuestions] = useState(0);
 
-  console.log("activePlayer", activePlayer);
-
-  console.log("power", power);
-  console.log("defense", defense);
-
-  console.log("quantity answers", quantityAnswers.quantity);
-  console.log("correct answers", quantityAnswers.correct);
+  // console.log("activePlayer", activePlayer);
+  // console.log("quantity answers", quantityAnswers.quantity);
+  // console.log("correct answers", quantityAnswers.correct);
 
   function handleNextTurnClick() {
     setIsQuestion(true);
@@ -36,6 +27,8 @@ export default function StatusGame({
       quantity: 0,
       correct: 0,
     });
+
+    onNextTurn(quantityAnswers.correct);
   }
 
   function handleQuestionOption(option) {
@@ -57,42 +50,38 @@ export default function StatusGame({
       correct: quantityAnswers.correct + correctAnswerCount,
     });
 
-    setQuestionActive(randomNumberInRange(1, questions.length));
+    setQuestionActive(randomNumber(1, questions.length));
 
     if (quantityAnswers.quantity === 2) {
       setIsQuestion(false);
     }
   }
 
-  function randomNumberInRange(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
+  // function rollDice() {
+  //   let correctAnswers = quantityAnswers.correct;
+  //   let diceResult = randomNumberInRange(1, 6);
+  //   let result = diceResult * power;
+  // let elementResult = (
+  //   <>
+  //     {!correctAnswers == 0 && (
+  //       <p>
+  //         Dice roller = {diceResult} x {correctAnswers} (correct
+  //         answers) = {diceResult * correctAnswers}
+  //       </p>
+  //     )}
+  //     {correctAnswers == 0 && (
+  //       <p>Dice roller = {diceResult} (NO MULTIPLIER)</p>
+  //     )}
+  //     <p>
+  //       Attack = {diceResult} * {power} = {result}
+  //     </p>
+  //   </>
+  // );
 
-  function rollDice() {
-    let correctAnswers = quantityAnswers.correct;
-    let diceResult = randomNumberInRange(1, 6);
-    let result = diceResult * power;
-    let elementResult = (
-      <>
-        {!correctAnswers == 0 && (
-          <p>
-            Dice roller = {diceResult} x {correctAnswers} (correct
-            answers) = {diceResult * correctAnswers}
-          </p>
-        )}
-        {correctAnswers == 0 && (
-          <p>Dice roller = {diceResult} (NO MULTIPLIER)</p>
-        )}
-        <p>
-          Attack = {diceResult} * {power} = {result}
-        </p>
-      </>
-    );
+  // setResultQuestions(result);
 
-    setResultQuestions(result);
-
-    return elementResult;
-  }
+  //   return elementResult;
+  // }
 
   return (
     <section className="status-game">
@@ -128,7 +117,7 @@ export default function StatusGame({
                 You answered {quantityAnswers.correct} correct from{" "}
                 {quantityAnswers.quantity} questions!
               </p>
-              {rollDice()}
+              {/* {rollDice()} */}
               <Button onClick={handleNextTurnClick}>Next Turn</Button>
             </div>
           </>

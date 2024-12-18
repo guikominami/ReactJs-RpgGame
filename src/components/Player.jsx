@@ -45,7 +45,6 @@ export default function Player({
   let editingPower = playerData.power;
   let editingDefense = playerData.defense;
   let playerId = playerData.id;
-  let playerActive = playerData.active;
   let textButton = "Edit";
 
   if (isEditing) {
@@ -76,27 +75,19 @@ export default function Player({
     textButton = "Save";
   }
 
-  let healthElement = <></>;
-
-  let attackElement = (
-    <span>
-      <b>Attack:</b> {playerData.attack}
-    </span>
-  );
-
-  let blockElement = (
-    <span>
-      <b>Block:</b> {playerData.block}
-    </span>
-  );
-
-  let questionsResultElement = (
+  let attackDefenseElement = (
     <>
       <span>
-        <b>Dice:</b> {playerData.block}
+        <b>Health:</b> {playerData.health}
       </span>
       <span>
-        <b>Multiplier:</b> {playerData.block}
+        <b>{"Hit points"}</b> {playerData.points}
+      </span>
+      <span>
+        <b>Dice:</b> {playerData.dice}
+      </span>
+      <span>
+        <b>Multiplier:</b> {playerData.multiplier}
       </span>
     </>
   );
@@ -115,12 +106,7 @@ export default function Player({
         <span>
           <b>Defense:</b> {editingDefense}
         </span>
-        <span>
-          <b>Health:</b> {playerData.health}
-        </span>
-        {onGameStart && healthElement}
-        {onGameStart && (playerActive ? attackElement : blockElement)}
-        {onGameStart && questionsResultElement}
+        {onGameStart && attackDefenseElement}
       </div>
       {!onGameStart && buttonEditElement}
     </section>
