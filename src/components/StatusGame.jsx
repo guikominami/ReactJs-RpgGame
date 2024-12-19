@@ -5,7 +5,7 @@ import "./StatusGame.css";
 import questions from "../assets/questionsData.json";
 import randomNumber from "../components/basic/RandomNumber";
 
-export default function StatusGame({ activePlayer, onNextTurn }) {
+export default function StatusGame({ isAttacking, onNextTurn }) {
   const [isQuestion, setIsQuestion] = useState(true);
   const [questionActive, setQuestionActive] = useState(
     randomNumber(1, questions.length)
@@ -28,6 +28,7 @@ export default function StatusGame({ activePlayer, onNextTurn }) {
       correct: 0,
     });
 
+    //if isAttacking for false, end the round
     onNextTurn(quantityAnswers.correct);
   }
 
@@ -36,11 +37,10 @@ export default function StatusGame({ activePlayer, onNextTurn }) {
 
     const correctAnswer = questions[questionActive].answer;
 
-    console.log("option selected", option);
-    console.log("option correct", correctAnswer);
+    // console.log("option selected", option);
+    // console.log("option correct", correctAnswer);
 
     if (option === correctAnswer) {
-      console.log("correct!!!");
       correctAnswerCount = 1;
     }
 
@@ -57,36 +57,13 @@ export default function StatusGame({ activePlayer, onNextTurn }) {
     }
   }
 
-  // function rollDice() {
-  //   let correctAnswers = quantityAnswers.correct;
-  //   let diceResult = randomNumberInRange(1, 6);
-  //   let result = diceResult * power;
-  // let elementResult = (
-  //   <>
-  //     {!correctAnswers == 0 && (
-  //       <p>
-  //         Dice roller = {diceResult} x {correctAnswers} (correct
-  //         answers) = {diceResult * correctAnswers}
-  //       </p>
-  //     )}
-  //     {correctAnswers == 0 && (
-  //       <p>Dice roller = {diceResult} (NO MULTIPLIER)</p>
-  //     )}
-  //     <p>
-  //       Attack = {diceResult} * {power} = {result}
-  //     </p>
-  //   </>
-  // );
-
-  // setResultQuestions(result);
-
-  //   return elementResult;
-  // }
-
   return (
     <section className="status-game">
       <div className="status-game-column">
-        <h2>Game Status</h2>
+        <h2>
+          Game Status - Answer for{" "}
+          {isAttacking ? "attack" : "defense"}
+        </h2>
         {isQuestion && (
           <>
             <p>
@@ -112,12 +89,11 @@ export default function StatusGame({ activePlayer, onNextTurn }) {
         )}
         {!isQuestion && (
           <>
-            <div className="question-options">
+            <div className="next-turn">
               <p>
                 You answered {quantityAnswers.correct} correct from{" "}
                 {quantityAnswers.quantity} questions!
               </p>
-              {/* {rollDice()} */}
               <Button onClick={handleNextTurnClick}>Next Turn</Button>
             </div>
           </>

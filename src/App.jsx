@@ -6,8 +6,12 @@ import randomNumber from "./components/basic/RandomNumber";
 
 function App() {
   const [isGameStarted, setIsGameStarted] = useState(false);
-  const [activePlayer, setActivePlayer] = useState(0);
-  const [isAttacking, setIsAttacking] = useState(true);
+  const [statusPlayers, setStatusPlayers] = useState({
+    activePlayer: 0,
+    isAttacking: true,
+    attacking: 0,
+    defending: 1,
+  });
   const [playerData, setPlayerData] = useState([
     {
       id: 1,
@@ -31,7 +35,9 @@ function App() {
     },
   ]);
 
-  console.log("app", playerData);
+  console.log("app playerData", playerData);
+  console.log("app activePlayer", statusPlayers.activePlayer);
+  console.log("app isAttacking", statusPlayers.isAttacking);
 
   function handleAddNewPlayer(player) {
     setPlayerData(
@@ -55,47 +61,85 @@ function App() {
   }
 
   function handleNextTurn(resultQuestions) {
-    let diceResult = randomNumber(1, 6);
-    let resultAttackDefense =
+    const diceResult = randomNumber(1, 6);
+
+    const resultQuestionsDice =
       diceResult * (parseInt(resultQuestions) + 1);
 
-    let pointsMultiplier =
-      playerData[activePlayer].power * resultAttackDefense;
+    const pointsAttackOrDefense = statusPlayers.isAttacking
+      ? playerData[statusPlayers.activePlayer].power
+      : playerData[statusPlayers.activePlayer].defense;
 
-    if (!isAttacking) {
-      pointsMultiplier =
-        playerData[activePlayer].defense * resultAttackDefense;
-    }
+    const hitPoints = resultQuestionsDice * pointsAttackOrDefense;
 
-    console.log("resultQuestions", resultQuestions);
-    console.log("diceResult", diceResult);
-    console.log("resultAttackDefense", resultAttackDefense);
-    console.log("pointsMultiplier", pointsMultiplier);
+    let healthActive = playerData[statusPlayers.activePlayer].health;
 
-    setActivePlayer((curActivePlayer) =>
-      curActivePlayer === 0 ? 1 : 0
+    // console.log("resultQuestions", resultQuestions);
+    // console.log("resultQuestionsDice", resultQuestionsDice);
+    // console.log("pointsAttackOrDefense", pointsAttackOrDefense);
+    // console.log("hitPoints", hitPoints);
+
+    setStatusPlayers((prevState) => ({
+      ...prevState,
+      activePlayer: prevState.activePlayer === 0 ? 1 : 0,
+      isAttacking: !prevState.isAttacking,
+    }));
+
+    console.log("app attacking", statusPlayers.attacking);
+    console.log("app defending", statusPlayers.defending);
+
+    console.log(
+      "playerData[statusPlayers.attacking].points",
+      playerData[statusPlayers.attacking].points
     );
+
+    console.log(
+      "playerData[statusPlayers.defending].points",
+      hitPoints
+    );
+
+    //Fim de round
+    if (!statusPlayers.isAttacking) {
+      const hitPointsDifference =
+        playerData[statusPlayers.attacking].points - hitPoints;
+
+      console.log(
+        "FIM DE ROUND - hitPointsDifference",
+        hitPointsDifference
+      );
+
+      healthActive =
+        hitPointsDifference > 0
+          ? healthActive - hitPointsDifference
+          : healthActive;
+
+      console.log("FIM DE ROUND - healthActive", healthActive);
+
+      //Apenas no fim do round é que muda o status de quem está atacando e quem está defendendo.
+      setStatusPlayers((prevState) => ({
+        ...prevState,
+        attacking: prevState.attacking === 0 ? 1 : 0,
+        defending: prevState.defending === 0 ? 1 : 0,
+      }));
+    }
 
     setPlayerData(
       playerData.map((item) => {
-        if (item.id === playerData[activePlayer].id) {
+        if (item.id === playerData[statusPlayers.activePlayer].id) {
           return {
             ...item,
-            points: pointsMultiplier,
+            health: healthActive,
+            points: hitPoints,
             dice: diceResult,
-            multiplier: parseInt(resultQuestions) + 1,
+            multiplier:
+              resultQuestions > 0
+                ? parseInt(resultQuestions) + 1
+                : resultQuestions,
           };
         } else {
           return item;
         }
       })
-    );
-  }
-
-  function handleSelectAttackingPlayer() {
-    console.log("activePlayer", activePlayer);
-    setIsAttacking((curActivePlayerAction) =>
-      curActivePlayerAction === 0 ? 1 : 0
     );
   }
 
@@ -115,10 +159,8 @@ function App() {
         <SetupGame onGameStart={handleGameStart} />
         {isGameStarted && (
           <StatusGame
-            activePlayer={activePlayer}
+            activePlayer={statusPlayers.isAttacking}
             onNextTurn={handleNextTurn}
-            power={playerData[activePlayer].power}
-            defense={playerData[activePlayer].defense}
           />
         )}
       </div>

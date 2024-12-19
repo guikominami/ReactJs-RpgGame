@@ -87,7 +87,8 @@ export default function Player({
         <b>Dice:</b> {playerData.dice}
       </span>
       <span>
-        <b>Multiplier:</b> {playerData.multiplier}
+        <b>Multiplier:</b> {playerData.multiplier > 1 && "x"}
+        {playerData.multiplier}
       </span>
     </>
   );
