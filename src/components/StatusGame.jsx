@@ -15,10 +15,6 @@ export default function StatusGame({ isAttacking, onNextTurn }) {
     correct: 0,
   });
 
-  // console.log("activePlayer", activePlayer);
-  // console.log("quantity answers", quantityAnswers.quantity);
-  // console.log("correct answers", quantityAnswers.correct);
-
   function handleNextTurnClick() {
     setIsQuestion(true);
 
@@ -36,9 +32,6 @@ export default function StatusGame({ isAttacking, onNextTurn }) {
     let correctAnswerCount = 0;
 
     const correctAnswer = questions[questionActive].answer;
-
-    // console.log("option selected", option);
-    // console.log("option correct", correctAnswer);
 
     if (option === correctAnswer) {
       correctAnswerCount = 1;

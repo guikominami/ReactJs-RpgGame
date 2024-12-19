@@ -8,6 +8,10 @@ button {
   cursor: pointer;
 }
 
+button:focus {
+  outline: none;
+}
+
 button:hover {
   background: #002a25;
   color: #ffffff;
@@ -29,7 +33,7 @@ button:hover {
   color: rgb(255, 255, 255);
   background-color: #2c736a;
   text-transform: uppercase;
-  width: 8rem;
+  width: 8rem; 
 }
 
 .start:hover {

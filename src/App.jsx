@@ -6,6 +6,7 @@ import randomNumber from "./components/basic/RandomNumber";
 
 function App() {
   const [isGameStarted, setIsGameStarted] = useState(false);
+  const [isRoundFinished, setIsRoundFinished] = useState(false);
   const [statusPlayers, setStatusPlayers] = useState({
     activePlayer: 0,
     isAttacking: true,
@@ -14,7 +15,7 @@ function App() {
   });
   const [playerData, setPlayerData] = useState([
     {
-      id: 1,
+      id: 0,
       name: "Player 1",
       power: 10,
       defense: 10,
@@ -24,7 +25,7 @@ function App() {
       multiplier: 0,
     },
     {
-      id: 2,
+      id: 1,
       name: "Player 2",
       power: 10,
       defense: 10,
@@ -76,24 +77,11 @@ function App() {
 
     let healthActive = playerData[statusPlayers.activePlayer].health;
 
-    // console.log("resultQuestions", resultQuestions);
-    // console.log("resultQuestionsDice", resultQuestionsDice);
-    // console.log("pointsAttackOrDefense", pointsAttackOrDefense);
-    // console.log("hitPoints", hitPoints);
-
-    // console.log(
-    //   "playerData[statusPlayers.attacking].points",
-    //   playerData[statusPlayers.attacking].points
-    // );
-
-    // console.log(
-    //   "playerData[statusPlayers.defending].points",
-    //   hitPoints
-    // );
-
     //REVISAR HIT POINTS
     //Fim de round
     if (!statusPlayers.isAttacking) {
+      console.log("hitPoints", hitPoints);
+
       const hitPointsDifference =
         playerData[statusPlayers.attacking].points - hitPoints;
 
@@ -113,6 +101,8 @@ function App() {
     setPlayerData(
       playerData.map((item) => {
         if (item.id === playerData[statusPlayers.activePlayer].id) {
+          console.log(item);
+          console.log(playerData[statusPlayers.activePlayer].id);
           return {
             ...item,
             health: healthActive,
@@ -135,9 +125,11 @@ function App() {
         ...prevState,
         activePlayer: prevState.activePlayer === 0 ? 1 : 0,
         isAttacking: !prevState.isAttacking,
-        attacking: prevState.attacking === 1 ? 2 : 1,
-        defending: prevState.defending === 2 ? 1 : 2,
+        attacking: prevState.attacking === 0 ? 1 : 0,
+        defending: prevState.defending === 1 ? 0 : 1,
       }));
+
+      setIsRoundFinished((round) => !round);
     } else {
       setStatusPlayers((prevState) => ({
         ...prevState,
@@ -167,6 +159,8 @@ function App() {
           <StatusGame
             activePlayer={statusPlayers.isAttacking}
             onNextTurn={handleNextTurn}
+            isRoundFinished={isRoundFinished}
+            players={playerData}
           />
         )}
       </div>
