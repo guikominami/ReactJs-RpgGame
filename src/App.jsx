@@ -35,9 +35,11 @@ function App() {
     },
   ]);
 
-  console.log("app playerData", playerData);
+  // console.log("app playerData", playerData);
   console.log("app activePlayer", statusPlayers.activePlayer);
   console.log("app isAttacking", statusPlayers.isAttacking);
+  console.log("app attacking", statusPlayers.attacking);
+  console.log("app defending", statusPlayers.defending);
 
   function handleAddNewPlayer(player) {
     setPlayerData(
@@ -79,25 +81,17 @@ function App() {
     // console.log("pointsAttackOrDefense", pointsAttackOrDefense);
     // console.log("hitPoints", hitPoints);
 
-    setStatusPlayers((prevState) => ({
-      ...prevState,
-      activePlayer: prevState.activePlayer === 0 ? 1 : 0,
-      isAttacking: !prevState.isAttacking,
-    }));
+    // console.log(
+    //   "playerData[statusPlayers.attacking].points",
+    //   playerData[statusPlayers.attacking].points
+    // );
 
-    console.log("app attacking", statusPlayers.attacking);
-    console.log("app defending", statusPlayers.defending);
+    // console.log(
+    //   "playerData[statusPlayers.defending].points",
+    //   hitPoints
+    // );
 
-    console.log(
-      "playerData[statusPlayers.attacking].points",
-      playerData[statusPlayers.attacking].points
-    );
-
-    console.log(
-      "playerData[statusPlayers.defending].points",
-      hitPoints
-    );
-
+    //REVISAR HIT POINTS
     //Fim de round
     if (!statusPlayers.isAttacking) {
       const hitPointsDifference =
@@ -114,13 +108,6 @@ function App() {
           : healthActive;
 
       console.log("FIM DE ROUND - healthActive", healthActive);
-
-      //Apenas no fim do round é que muda o status de quem está atacando e quem está defendendo.
-      setStatusPlayers((prevState) => ({
-        ...prevState,
-        attacking: prevState.attacking === 0 ? 1 : 0,
-        defending: prevState.defending === 0 ? 1 : 0,
-      }));
     }
 
     setPlayerData(
@@ -141,6 +128,23 @@ function App() {
         }
       })
     );
+
+    if (!statusPlayers.isAttacking) {
+      //Apenas no fim do round é que muda o status de quem está atacando e quem está defendendo.
+      setStatusPlayers((prevState) => ({
+        ...prevState,
+        activePlayer: prevState.activePlayer === 0 ? 1 : 0,
+        isAttacking: !prevState.isAttacking,
+        attacking: prevState.attacking === 1 ? 2 : 1,
+        defending: prevState.defending === 2 ? 1 : 2,
+      }));
+    } else {
+      setStatusPlayers((prevState) => ({
+        ...prevState,
+        activePlayer: prevState.activePlayer === 0 ? 1 : 0,
+        isAttacking: !prevState.isAttacking,
+      }));
+    }
   }
 
   return (
@@ -150,11 +154,13 @@ function App() {
           playerData={playerData[0]}
           onGameStart={isGameStarted}
           onAddNewPlayer={handleAddNewPlayer}
+          isAttacking={statusPlayers.attacking}
         />
         <Player
           playerData={playerData[1]}
           onGameStart={isGameStarted}
           onAddNewPlayer={handleAddNewPlayer}
+          isAttacking={statusPlayers.attacking}
         />
         <SetupGame onGameStart={handleGameStart} />
         {isGameStarted && (

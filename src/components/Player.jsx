@@ -7,6 +7,7 @@ export default function Player({
   playerData,
   onGameStart,
   onAddNewPlayer,
+  isAttacking,
 }) {
   const playerName = useRef();
   const playerPower = useRef();
@@ -97,8 +98,17 @@ export default function Player({
     <Button onClick={handleClick}>{textButton}</Button>
   );
 
+  // console.log("player id", playerData.id);
+  // console.log("who is Attacking", isAttacking);
+
   return (
-    <section className="player">
+    <section
+      className={
+        parseInt(playerData.id) === parseInt(isAttacking)
+          ? "player active"
+          : "player"
+      }
+    >
       <div className="player_data">
         <h2>{editingName}</h2>
         <span>
