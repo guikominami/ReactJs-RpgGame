@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Player from "./components/Player";
 import SetupGame from "./components/SetupGame";
 import StatusGame from "./components/StatusGame";
 import randomNumber from "./components/basic/RandomNumber";
+import Modal from "./components/basic/Modal";
+import RoundSummary from "./components/basic/RoundSummary";
 
 function App() {
+  const modal = useRef();
+
   const [isGameStarted, setIsGameStarted] = useState(false);
-  const [isRoundFinished, setIsRoundFinished] = useState(false);
   const [statusPlayers, setStatusPlayers] = useState({
     activePlayer: 0,
     isAttacking: true,
@@ -120,6 +123,8 @@ function App() {
     );
 
     if (!statusPlayers.isAttacking) {
+      modal.current.open();
+
       //Apenas no fim do round é que muda o status de quem está atacando e quem está defendendo.
       setStatusPlayers((prevState) => ({
         ...prevState,
@@ -128,8 +133,6 @@ function App() {
         attacking: prevState.attacking === 0 ? 1 : 0,
         defending: prevState.defending === 1 ? 0 : 1,
       }));
-
-      setIsRoundFinished((round) => !round);
     } else {
       setStatusPlayers((prevState) => ({
         ...prevState,
@@ -139,8 +142,43 @@ function App() {
     }
   }
 
+  // const playerAttack = playerData[statusPlayers.attacking];
+  // const playerDefend = playerData[statusPlayers.defending];
+  // const modalAttackSummary = (
+  //   <>
+  //     <p>
+  //       <b>Attack:</b>
+  //     </p>
+  //     <p>
+  //       {playerAttack.multiplier} x (multiplier for correct answer)
+  //     </p>
+  //     <p>{playerAttack.dice} + (dice result)</p>
+  //     <p>{playerAttack.power} = (Power)</p>
+  //     <p>{playerAttack.points} (Hit points)</p>
+  //   </>
+  // );
+  // const modalDefenseSummary = (
+  //   <>
+  //     <p>
+  //       <b>Block:</b>
+  //     </p>
+  //     <p>
+  //       {playerDefend.multiplier} x (multiplier for correct answer)
+  //     </p>
+  //     <p>{playerDefend.dice} + (dice result)</p>
+  //     <p>{playerDefend.power} = (Power)</p>
+  //     <p>{playerDefend.points} (Hit points)</p>
+  //   </>
+  // );
+
   return (
     <>
+      <Modal ref={modal} buttonCaption="Ok">
+        <RoundSummary
+          playerAttack={playerData[statusPlayers.attacking]}
+          playerDefend={playerData[statusPlayers.defending]}
+        />
+      </Modal>
       <div id="main-area">
         <Player
           playerData={playerData[0]}
@@ -154,14 +192,25 @@ function App() {
           onAddNewPlayer={handleAddNewPlayer}
           isAttacking={statusPlayers.attacking}
         />
-        <SetupGame onGameStart={handleGameStart} />
+
+        <SetupGame
+          onGameStart={handleGameStart}
+          turnResult1={playerData[0]}
+          turnResult2={playerData[1]}
+        />
         {isGameStarted && (
-          <StatusGame
-            activePlayer={statusPlayers.isAttacking}
-            onNextTurn={handleNextTurn}
-            isRoundFinished={isRoundFinished}
-            players={playerData}
-          />
+          <>
+            <StatusGame
+              playerBoardId={playerData[0].id}
+              onNextTurn={handleNextTurn}
+              activePlayer={statusPlayers.activePlayer}
+            />
+            <StatusGame
+              playerBoardId={playerData[1].id}
+              onNextTurn={handleNextTurn}
+              activePlayer={statusPlayers.activePlayer}
+            />
+          </>
         )}
       </div>
     </>

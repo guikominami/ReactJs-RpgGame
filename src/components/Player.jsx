@@ -79,10 +79,7 @@ export default function Player({
   let attackDefenseElement = (
     <>
       <span>
-        <b>Health:</b> {playerData.health}
-      </span>
-      <span>
-        <b>{"Hit points"}</b> {playerData.points}
+        <b>{"Hit points:"}</b> {playerData.points}
       </span>
       <span>
         <b>Dice:</b> {playerData.dice}
@@ -104,22 +101,29 @@ export default function Player({
   return (
     <section
       className={
-        parseInt(playerData.id) === parseInt(isAttacking)
+        parseInt(playerData.id) === parseInt(isAttacking) &&
+        onGameStart
           ? "player active"
           : "player"
       }
     >
+      <h2>{editingName}</h2>
       <div className="player_data">
-        <h2>{editingName}</h2>
-        <span>
-          <b>Power:</b> {editingPower}
-        </span>
-        <span>
-          <b>Defense:</b> {editingDefense}
-        </span>
-        {onGameStart && attackDefenseElement}
+        <div className="player-column">
+          <span>
+            <b>Power:</b> {editingPower}
+          </span>
+          <span>
+            <b>Defense:</b> {editingDefense}
+          </span>
+          <span>
+            <b>Health:</b> {playerData.health}
+          </span>
+        </div>
+        {onGameStart && (
+          <div className="player-column">{attackDefenseElement}</div>
+        )}
       </div>
-      {!onGameStart && buttonEditElement}
     </section>
   );
 }
