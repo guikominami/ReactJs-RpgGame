@@ -24,26 +24,36 @@ export default function RoundSummary({ playerAttack, playerDefend }) {
           points={playerDefend.points}
         />
       </div>
-      <div>
+      <div className="result-summary">
         <p>
           <b>Round Result: </b>
         </p>
         <p>
-          Attack points - Defense points: {playerAttack.points} -{" "}
-          {playerDefend.points}
-        </p>
-        <p>
-          Health for Player {playerAttack.id + 1}:{" "}
-          {playerDefend.health}
-        </p>
-        <p>
+          Attack points - Defense points:{" "}
           <b>
-            {" "}
-            Damage:{" "}
+            {playerAttack.points} - {playerDefend.points}
+          </b>
+        </p>
+
+        <p>
+          {" "}
+          Damage:{" "}
+          <b>
             {damage < 0
               ? "0 (Attack points less than defense)"
               : damage}
           </b>
+        </p>
+        <p>
+          Player {playerAttack.id + 1} health :{" "}
+          {damage > 0 ? (
+            <b>
+              {playerDefend.health} - {damage} ={" "}
+              {playerDefend.health - damage}
+            </b>
+          ) : (
+            <b>{playerDefend.health}</b>
+          )}
         </p>
       </div>
     </>

@@ -22,7 +22,7 @@ function App() {
       name: "Player 1",
       power: 10,
       defense: 10,
-      health: 100,
+      health: 1000,
       points: 0,
       dice: 0,
       multiplier: 0,
@@ -32,7 +32,7 @@ function App() {
       name: "Player 2",
       power: 10,
       defense: 10,
-      health: 100,
+      health: 1000,
       points: 0,
       dice: 0,
       multiplier: 0,
@@ -80,32 +80,19 @@ function App() {
 
     let healthActive = playerData[statusPlayers.activePlayer].health;
 
-    //REVISAR HIT POINTS
-    //Fim de round
     if (!statusPlayers.isAttacking) {
-      console.log("hitPoints", hitPoints);
-
       const hitPointsDifference =
         playerData[statusPlayers.attacking].points - hitPoints;
-
-      console.log(
-        "FIM DE ROUND - hitPointsDifference",
-        hitPointsDifference
-      );
 
       healthActive =
         hitPointsDifference > 0
           ? healthActive - hitPointsDifference
           : healthActive;
-
-      console.log("FIM DE ROUND - healthActive", healthActive);
     }
 
     setPlayerData(
       playerData.map((item) => {
         if (item.id === playerData[statusPlayers.activePlayer].id) {
-          console.log(item);
-          console.log(playerData[statusPlayers.activePlayer].id);
           return {
             ...item,
             health: healthActive,
@@ -124,15 +111,6 @@ function App() {
 
     if (!statusPlayers.isAttacking) {
       modal.current.open();
-
-      //Apenas no fim do round é que muda o status de quem está atacando e quem está defendendo.
-      setStatusPlayers((prevState) => ({
-        ...prevState,
-        activePlayer: prevState.activePlayer === 0 ? 1 : 0,
-        isAttacking: !prevState.isAttacking,
-        attacking: prevState.attacking === 0 ? 1 : 0,
-        defending: prevState.defending === 1 ? 0 : 1,
-      }));
     } else {
       setStatusPlayers((prevState) => ({
         ...prevState,
@@ -142,38 +120,22 @@ function App() {
     }
   }
 
-  // const playerAttack = playerData[statusPlayers.attacking];
-  // const playerDefend = playerData[statusPlayers.defending];
-  // const modalAttackSummary = (
-  //   <>
-  //     <p>
-  //       <b>Attack:</b>
-  //     </p>
-  //     <p>
-  //       {playerAttack.multiplier} x (multiplier for correct answer)
-  //     </p>
-  //     <p>{playerAttack.dice} + (dice result)</p>
-  //     <p>{playerAttack.power} = (Power)</p>
-  //     <p>{playerAttack.points} (Hit points)</p>
-  //   </>
-  // );
-  // const modalDefenseSummary = (
-  //   <>
-  //     <p>
-  //       <b>Block:</b>
-  //     </p>
-  //     <p>
-  //       {playerDefend.multiplier} x (multiplier for correct answer)
-  //     </p>
-  //     <p>{playerDefend.dice} + (dice result)</p>
-  //     <p>{playerDefend.power} = (Power)</p>
-  //     <p>{playerDefend.points} (Hit points)</p>
-  //   </>
-  // );
+  function handleButtonOk() {
+    console.log("Novo round");
+
+    //Apenas no fim do round é que muda o status de quem está atacando e quem está defendendo.
+    setStatusPlayers((prevState) => ({
+      ...prevState,
+      activePlayer: prevState.activePlayer === 0 ? 1 : 0,
+      isAttacking: !prevState.isAttacking,
+      attacking: prevState.attacking === 0 ? 1 : 0,
+      defending: prevState.defending === 1 ? 0 : 1,
+    }));
+  }
 
   return (
     <>
-      <Modal ref={modal} buttonCaption="Ok">
+      <Modal ref={modal} buttonCaption="Ok" onClick={handleButtonOk}>
         <RoundSummary
           playerAttack={playerData[statusPlayers.attacking]}
           playerDefend={playerData[statusPlayers.defending]}

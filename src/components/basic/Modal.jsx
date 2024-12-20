@@ -5,7 +5,7 @@ import Button from "./Button";
 import "./Modal.css";
 
 export default forwardRef(function Modal(
-  { children, buttonCaption },
+  { children, buttonCaption, ...props },
   ref
 ) {
   const dialog = useRef();
@@ -19,7 +19,7 @@ export default forwardRef(function Modal(
   });
 
   return createPortal(
-    <dialog className="modal" ref={dialog}>
+    <dialog className="modal" ref={dialog} {...props}>
       {children}
       <form method="dialog">
         <Button>{buttonCaption}</Button>

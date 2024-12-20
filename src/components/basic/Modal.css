@@ -20,3 +20,11 @@
   color: rgb(34, 34, 34);
   margin-bottom: .2rem;
 }
+
+@media screen and (max-width: 600px) {
+  .modal{
+    padding: 2rem 0 2rem 1.5rem;
+    margin: 6.5rem 1rem;
+    width: 22rem;
+  }
+}
