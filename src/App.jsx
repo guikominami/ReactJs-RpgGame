@@ -39,12 +39,6 @@ function App() {
     },
   ]);
 
-  // console.log("app playerData", playerData);
-  console.log("app activePlayer", statusPlayers.activePlayer);
-  console.log("app isAttacking", statusPlayers.isAttacking);
-  console.log("app attacking", statusPlayers.attacking);
-  console.log("app defending", statusPlayers.defending);
-
   function handleAddNewPlayer(player) {
     setPlayerData(
       playerData.map((item) => {
@@ -66,7 +60,7 @@ function App() {
     setIsGameStarted((value) => !value);
   }
 
-  function handleNextTurn(resultQuestions) {
+  async function handleNextTurn(resultQuestions) {
     const diceResult = randomNumber(1, 6);
 
     const resultQuestionsDice =
@@ -90,9 +84,66 @@ function App() {
           : healthActive;
     }
 
+    updatePlayerData(
+      playerData[statusPlayers.activePlayer].id,
+      healthActive,
+      hitPoints,
+      diceResult,
+      resultQuestions
+    );
+
+    if (statusPlayers.isAttacking) {
+      //Fim de turno é quando acabou o ataque
+      setStatusPlayers((prevState) => ({
+        ...prevState,
+        activePlayer: prevState.activePlayer === 0 ? 1 : 0,
+        isAttacking: !prevState.isAttacking,
+      }));
+    } else {
+      setTimeout(() => {
+        modal.current.open();
+      }, 1000);
+    }
+  }
+
+  function handleEndOfRound() {
+    //Apenas no fim do round é que muda o status de quem está atacando e quem está defendendo.
+    //ROUND 1: atacando 0 defendendo 1
+    //ROUND 2: atacando 1 defendendo 0
+
+    console.log("FIM DE ROUND");
+
+    setStatusPlayers((prevState) => ({
+      ...prevState,
+      activePlayer: prevState.attacking === 0 ? 1 : 0,
+      isAttacking: !prevState.isAttacking,
+      attacking: prevState.attacking === 0 ? 1 : 0,
+      defending: prevState.defending === 1 ? 0 : 1,
+    }));
+
     setPlayerData(
       playerData.map((item) => {
-        if (item.id === playerData[statusPlayers.activePlayer].id) {
+        return {
+          ...item,
+          health: 0,
+          points: 0,
+          dice: 0,
+          multiplier: 0,
+        };
+      })
+    );
+  }
+
+  function updatePlayerData(
+    playerId,
+    healthActive,
+    hitPoints,
+    diceResult,
+    resultQuestions
+  ) {
+    setPlayerData(
+      playerData.map((item) => {
+        if (item.id === playerId) {
           return {
             ...item,
             health: healthActive,
@@ -108,34 +159,15 @@ function App() {
         }
       })
     );
-
-    if (!statusPlayers.isAttacking) {
-      modal.current.open();
-    } else {
-      setStatusPlayers((prevState) => ({
-        ...prevState,
-        activePlayer: prevState.activePlayer === 0 ? 1 : 0,
-        isAttacking: !prevState.isAttacking,
-      }));
-    }
-  }
-
-  function handleButtonOk() {
-    console.log("Novo round");
-
-    //Apenas no fim do round é que muda o status de quem está atacando e quem está defendendo.
-    setStatusPlayers((prevState) => ({
-      ...prevState,
-      activePlayer: prevState.activePlayer === 0 ? 1 : 0,
-      isAttacking: !prevState.isAttacking,
-      attacking: prevState.attacking === 0 ? 1 : 0,
-      defending: prevState.defending === 1 ? 0 : 1,
-    }));
   }
 
   return (
     <>
-      <Modal ref={modal} buttonCaption="Ok" onClick={handleButtonOk}>
+      <Modal
+        ref={modal}
+        buttonCaption="Ok"
+        onClick={handleEndOfRound}
+      >
         <RoundSummary
           playerAttack={playerData[statusPlayers.attacking]}
           playerDefend={playerData[statusPlayers.defending]}
@@ -146,13 +178,13 @@ function App() {
           playerData={playerData[0]}
           onGameStart={isGameStarted}
           onAddNewPlayer={handleAddNewPlayer}
-          isAttacking={statusPlayers.attacking}
+          activePlayer={statusPlayers.activePlayer}
         />
         <Player
           playerData={playerData[1]}
           onGameStart={isGameStarted}
           onAddNewPlayer={handleAddNewPlayer}
-          isAttacking={statusPlayers.attacking}
+          activePlayer={statusPlayers.activePlayer}
         />
 
         <SetupGame
@@ -163,14 +195,14 @@ function App() {
         {isGameStarted && (
           <>
             <StatusGame
-              playerBoardId={playerData[0].id}
               onNextTurn={handleNextTurn}
-              activePlayer={statusPlayers.activePlayer}
-            />
-            <StatusGame
-              playerBoardId={playerData[1].id}
-              onNextTurn={handleNextTurn}
-              activePlayer={statusPlayers.activePlayer}
+              isAttacking={statusPlayers.isAttacking}
+              playerNameAttacking={
+                playerData[statusPlayers.attacking].name
+              }
+              playerNameDefending={
+                playerData[statusPlayers.defending].name
+              }
             />
           </>
         )}

@@ -6,9 +6,10 @@ import questions from "../assets/questionsData.json";
 import randomNumber from "../components/basic/RandomNumber";
 
 export default function StatusGame({
-  playerBoardId,
   onNextTurn,
-  activePlayer,
+  isAttacking,
+  playerNameAttacking,
+  playerNameDefending,
 }) {
   const [isQuestion, setIsQuestion] = useState(true);
   const [questionActive, setQuestionActive] = useState(
@@ -37,6 +38,9 @@ export default function StatusGame({
 
     const correctAnswer = questions[questionActive].answer;
 
+    console.log("correctAnswer", correctAnswer);
+    console.log("option", option);
+
     if (option === correctAnswer) {
       correctAnswerCount = 1;
     }
@@ -57,47 +61,46 @@ export default function StatusGame({
   return (
     <section className="status-game">
       <div className="status-game-column">
-        {isQuestion &&
-          parseInt(playerBoardId) === parseInt(activePlayer) && (
-            <>
-              <p>
-                <b>ANSWER FOR ATTACK/DEFENSE</b>
-              </p>
-              <p>
-                <b>Question: </b>
-                {questions[questionActive].question}
-              </p>
+        {isQuestion && (
+          <>
+            <h3>
+              {isAttacking
+                ? playerNameAttacking
+                : playerNameDefending}{" "}
+              ANSWER FOR {isAttacking ? "ATTACK" : "DEFENSE"}{" "}
+            </h3>
+            <p>
+              <b>Question: </b>
+              {questions[questionActive].question}
+            </p>
 
-              <div className="question-options">
-                <Button onClick={() => handleQuestionOption("A")}>
-                  {questions[questionActive].A}
-                </Button>
-                <Button onClick={() => handleQuestionOption("B")}>
-                  {questions[questionActive].B}
-                </Button>
-                <Button onClick={() => handleQuestionOption("C")}>
-                  {questions[questionActive].C}
-                </Button>
-                <Button onClick={() => handleQuestionOption("D")}>
-                  {questions[questionActive].D}
-                </Button>
-              </div>
-            </>
-          )}
-        {!isQuestion &&
-          parseInt(playerBoardId) === parseInt(activePlayer) && (
-            <>
-              <div className="next-turn">
-                <p>
-                  You answered {quantityAnswers.correct} correct from{" "}
-                  {quantityAnswers.quantity} questions!
-                </p>
-                <Button onClick={handleNextTurnClick}>
-                  Next Turn
-                </Button>
-              </div>
-            </>
-          )}
+            <div className="question-options">
+              <Button onClick={() => handleQuestionOption("A")}>
+                {questions[questionActive].A}
+              </Button>
+              <Button onClick={() => handleQuestionOption("B")}>
+                {questions[questionActive].B}
+              </Button>
+              <Button onClick={() => handleQuestionOption("C")}>
+                {questions[questionActive].C}
+              </Button>
+              <Button onClick={() => handleQuestionOption("D")}>
+                {questions[questionActive].D}
+              </Button>
+            </div>
+          </>
+        )}
+        {!isQuestion && (
+          <>
+            <div className="next-turn">
+              <p>
+                You answered {quantityAnswers.correct} correct from{" "}
+                {quantityAnswers.quantity} questions!
+              </p>
+              <Button onClick={handleNextTurnClick}>Next Turn</Button>
+            </div>
+          </>
+        )}
       </div>
     </section>
   );

@@ -4,8 +4,12 @@
 
 .modal{
   padding: 2rem 0 2rem 2.5rem;
-  margin: 15rem 25rem 5rem 35rem;
   width: 25rem;
+  display: "flex";
+  align-self: center;
+  justify-self: center;
+  align-items: center;
+
 }
 
 .modal h2{
@@ -24,7 +28,6 @@
 @media screen and (max-width: 600px) {
   .modal{
     padding: 2rem 0 2rem 1.5rem;
-    margin: 6.5rem 1rem;
     width: 22rem;
   }
-}
+} 

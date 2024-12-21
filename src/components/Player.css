@@ -3,7 +3,6 @@
   width: 20rem;
   height: 10rem;
   padding: 1.5rem 2rem 0 2rem;
-  margin-top: 0.8rem;
   background: linear-gradient(#4df8df, #4df0f8);
   color: hsl(24, 17%, 11%);
   box-shadow: 0 2px 8px rgba(35, 34, 34, 0.6);
@@ -65,3 +64,9 @@
   border: 1px solid #33726a;
   border-radius: 6px;
 }
+
+@media screen and (max-width: 600px) {
+  .player {
+    padding-top: 1.2rem;
+  }
+} 

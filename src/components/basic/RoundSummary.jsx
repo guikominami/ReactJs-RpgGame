@@ -40,12 +40,12 @@ export default function RoundSummary({ playerAttack, playerDefend }) {
           Damage:{" "}
           <b>
             {damage < 0
-              ? "0 (Attack points less than defense)"
+              ? "0 (attack points less than defense points)"
               : damage}
           </b>
         </p>
         <p>
-          Player {playerAttack.id + 1} health :{" "}
+          Player {playerDefend.id + 1} health :{" "}
           {damage > 0 ? (
             <b>
               {playerDefend.health} - {damage} ={" "}

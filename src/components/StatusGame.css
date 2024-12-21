@@ -1,11 +1,6 @@
 .status-game{
-  width: 20rem;
-  height: 16rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: start;
-  padding: 1.5rem;
+  width: 41.5rem;
+  height: 12rem;
   background: linear-gradient(#4df8df, #4df0f8);
   color: #221c18;
   box-shadow: 0 2px 8px rgba(35, 34, 34, 0.6);
@@ -13,27 +8,18 @@
 }
 
 .status-game-column{
-  width: 105%;
-}
-
-/* .status-game-column{
-  width: 16rem;
-  height: 12rem;
   display: flex;
   flex-direction: column;
-  align-items: start;
-  justify-content: start;
-  padding: 1.5rem;
-  background: linear-gradient(#4df8df, #4df0f8);
-  color: #221c18;
-  box-shadow: 0 2px 8px rgba(35, 34, 34, 0.6);
-  border-radius: 6px;
-  background-color: aliceblue;
-} */
+  justify-self: center;
+  align-self: center;
+  margin-top: 2rem;
+  width: 80%;
+}
 
-.status-game-column h2{
+.status-game-column h3{
   margin: 0;
   text-transform: uppercase;
+  margin-bottom: 1rem;
 }
 
 .status-game-column span{
@@ -48,6 +34,7 @@
 .status-game-column button{
   text-transform: uppercase;
   margin-right: 0.3rem;
+  font-size: small;
 }
 
 .question-options{
@@ -56,8 +43,17 @@
 }
 
 .question-options button{
-  padding: 0.3rem 0.3rem;
+  padding: 0.3rem 0.5rem;
   margin-bottom: 0.5rem;
-  font-size: small;
 }
+
+@media screen and (max-width: 600px) {
+  .status-game-column{
+    margin: 1.5rem 0 1rem 1rem;
+  }
+  
+  .question-options button{
+    font-size: small;
+  }
+} 
 
