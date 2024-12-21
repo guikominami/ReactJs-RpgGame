@@ -11,12 +11,14 @@ export default function RoundSummary({ playerAttack, playerDefend }) {
       <div className="main-summary">
         <RoundSummaryColumn
           type="Attack"
+          name={playerAttack.name}
           multiplier={playerAttack.multiplier}
           dice={playerAttack.dice}
           power={playerAttack.power}
           points={playerAttack.points}
         />
         <RoundSummaryColumn
+          name={playerDefend.name}
           type="Block"
           multiplier={playerDefend.multiplier}
           dice={playerDefend.dice}

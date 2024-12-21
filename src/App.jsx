@@ -10,6 +10,7 @@ function App() {
   const modal = useRef();
 
   const [isGameStarted, setIsGameStarted] = useState(false);
+  const [isRoundFinished, setIsRoundFinished] = useState(false);
   const [statusPlayers, setStatusPlayers] = useState({
     activePlayer: 0,
     isAttacking: true,
@@ -60,7 +61,7 @@ function App() {
     setIsGameStarted((value) => !value);
   }
 
-  async function handleNextTurn(resultQuestions) {
+  function handleNextTurn(resultQuestions) {
     const diceResult = randomNumber(1, 6);
 
     const resultQuestionsDice =
@@ -72,81 +73,25 @@ function App() {
 
     const hitPoints = resultQuestionsDice * pointsAttackOrDefense;
 
-    let healthActive = playerData[statusPlayers.activePlayer].health;
+    //let healthActive = playerData[statusPlayers.activePlayer].health;
 
-    if (!statusPlayers.isAttacking) {
-      const hitPointsDifference =
-        playerData[statusPlayers.attacking].points - hitPoints;
+    //ALTERADO PARA Só atualizar a saúde depois de fechar o modal
+    // if (!statusPlayers.isAttacking) {
+    //   console.log("recebendo dano");
+    //   const hitPointsDifference =
+    //     playerData[statusPlayers.attacking].points - hitPoints;
 
-      healthActive =
-        hitPointsDifference > 0
-          ? healthActive - hitPointsDifference
-          : healthActive;
-    }
-
-    updatePlayerData(
-      playerData[statusPlayers.activePlayer].id,
-      healthActive,
-      hitPoints,
-      diceResult,
-      resultQuestions
-    );
-
-    if (statusPlayers.isAttacking) {
-      //Fim de turno é quando acabou o ataque
-      setStatusPlayers((prevState) => ({
-        ...prevState,
-        activePlayer: prevState.activePlayer === 0 ? 1 : 0,
-        isAttacking: !prevState.isAttacking,
-      }));
-    } else {
-      setTimeout(() => {
-        modal.current.open();
-      }, 1000);
-    }
-  }
-
-  function handleEndOfRound() {
-    //Apenas no fim do round é que muda o status de quem está atacando e quem está defendendo.
-    //ROUND 1: atacando 0 defendendo 1
-    //ROUND 2: atacando 1 defendendo 0
-
-    console.log("FIM DE ROUND");
-
-    setStatusPlayers((prevState) => ({
-      ...prevState,
-      activePlayer: prevState.attacking === 0 ? 1 : 0,
-      isAttacking: !prevState.isAttacking,
-      attacking: prevState.attacking === 0 ? 1 : 0,
-      defending: prevState.defending === 1 ? 0 : 1,
-    }));
+    //   healthActive =
+    //     hitPointsDifference > 0
+    //       ? healthActive - hitPointsDifference
+    //       : healthActive;
+    // }
 
     setPlayerData(
       playerData.map((item) => {
-        return {
-          ...item,
-          health: 0,
-          points: 0,
-          dice: 0,
-          multiplier: 0,
-        };
-      })
-    );
-  }
-
-  function updatePlayerData(
-    playerId,
-    healthActive,
-    hitPoints,
-    diceResult,
-    resultQuestions
-  ) {
-    setPlayerData(
-      playerData.map((item) => {
-        if (item.id === playerId) {
+        if (item.id === playerData[statusPlayers.activePlayer].id) {
           return {
             ...item,
-            health: healthActive,
             points: hitPoints,
             dice: diceResult,
             multiplier:
@@ -159,6 +104,81 @@ function App() {
         }
       })
     );
+
+    if (statusPlayers.isAttacking) {
+      //Fim de turno é quando acabou o ataque
+      setStatusPlayers((prevState) => ({
+        ...prevState,
+        activePlayer: prevState.activePlayer === 0 ? 1 : 0,
+        isAttacking: !prevState.isAttacking,
+      }));
+    } else {
+      // setTimeout(() => {
+      //   modal.current.open();
+      // }, 1000);
+      setIsRoundFinished((roundStatus) => !roundStatus);
+    }
+  }
+
+  function handleSubmitResultAttackDefense() {
+    setIsRoundFinished((roundStatus) => !roundStatus);
+    modal.current.open();
+  }
+
+  function handleEndOfRound() {
+    //Apenas no fim do round é que muda o status de quem está atacando e quem está defendendo.
+    //ROUND 1: atacando 0 defendendo 1
+    //ROUND 2: atacando 1 defendendo 0
+    console.log("FIM DE ROUND");
+
+    const hitPointsDifference =
+      playerData[statusPlayers.attacking].points -
+      playerData[statusPlayers.defending].points;
+
+    let healthActive = playerData[statusPlayers.activePlayer].health;
+
+    setPlayerData(
+      playerData.map((item) => {
+        if (item.id === playerData[statusPlayers.activePlayer].id) {
+          return {
+            ...item,
+            health:
+              hitPointsDifference > 0
+                ? healthActive - hitPointsDifference
+                : healthActive,
+            points: 0,
+            dice: 0,
+            multiplier: 0,
+          };
+        } else {
+          return {
+            ...item,
+            points: 0,
+            dice: 0,
+            multiplier: 0,
+          };
+        }
+      })
+    );
+
+    setStatusPlayers((prevState) => ({
+      ...prevState,
+      activePlayer: prevState.attacking === 0 ? 1 : 0,
+      isAttacking: !prevState.isAttacking,
+      attacking: prevState.attacking === 0 ? 1 : 0,
+      defending: prevState.defending === 1 ? 0 : 1,
+    }));
+
+    // setPlayerData(
+    //   playerData.map((item) => {
+    //     return {
+    //       ...item,
+    //       points: 0,
+    //       dice: 0,
+    //       multiplier: 0,
+    //     };
+    //   })
+    // );
   }
 
   return (
@@ -203,6 +223,8 @@ function App() {
               playerNameDefending={
                 playerData[statusPlayers.defending].name
               }
+              isRoundFinished={isRoundFinished}
+              onFinishRound={handleSubmitResultAttackDefense}
             />
           </>
         )}

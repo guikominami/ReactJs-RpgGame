@@ -10,6 +10,8 @@ export default function StatusGame({
   isAttacking,
   playerNameAttacking,
   playerNameDefending,
+  isRoundFinished,
+  onFinishRound,
 }) {
   const [isQuestion, setIsQuestion] = useState(true);
   const [questionActive, setQuestionActive] = useState(
@@ -38,9 +40,6 @@ export default function StatusGame({
 
     const correctAnswer = questions[questionActive].answer;
 
-    console.log("correctAnswer", correctAnswer);
-    console.log("option", option);
-
     if (option === correctAnswer) {
       correctAnswerCount = 1;
     }
@@ -61,14 +60,12 @@ export default function StatusGame({
   return (
     <section className="status-game">
       <div className="status-game-column">
-        {isQuestion && (
+        <h3>
+          {isAttacking ? playerNameAttacking : playerNameDefending}{" "}
+          ANSWER FOR {isAttacking ? "ATTACK" : "DEFENSE"}{" "}
+        </h3>
+        {isQuestion && !isRoundFinished && (
           <>
-            <h3>
-              {isAttacking
-                ? playerNameAttacking
-                : playerNameDefending}{" "}
-              ANSWER FOR {isAttacking ? "ATTACK" : "DEFENSE"}{" "}
-            </h3>
             <p>
               <b>Question: </b>
               {questions[questionActive].question}
@@ -90,16 +87,23 @@ export default function StatusGame({
             </div>
           </>
         )}
-        {!isQuestion && (
-          <>
-            <div className="next-turn">
-              <p>
-                You answered {quantityAnswers.correct} correct from{" "}
-                {quantityAnswers.quantity} questions!
-              </p>
-              <Button onClick={handleNextTurnClick}>Next Turn</Button>
-            </div>
-          </>
+        {!isQuestion && !isRoundFinished && (
+          <div className="next-turn">
+            <p>
+              You answered {quantityAnswers.correct} correct from{" "}
+              {quantityAnswers.quantity} questions!
+            </p>
+            <Button onClick={handleNextTurnClick}>Next Turn</Button>
+          </div>
+        )}
+        {isRoundFinished && (
+          <div className="next-turn">
+            <p>
+              Finish round to view the detailed result of attack x
+              defense!
+            </p>
+            <Button onClick={onFinishRound}>Finish Round</Button>
+          </div>
         )}
       </div>
     </section>

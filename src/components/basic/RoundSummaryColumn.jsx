@@ -2,6 +2,7 @@
 import "./RoundSummary.css";
 
 export default function RoundSummaryColumn({
+  name,
   type,
   multiplier,
   dice,
@@ -11,7 +12,9 @@ export default function RoundSummaryColumn({
   return (
     <div className="column-summary">
       <p>
-        <b>{type}</b>
+        <b>
+          {name} -{type}
+        </b>
       </p>
       <p>{multiplier} x (multiplier for correct answer)</p>
       <p>{dice} + (dice result)</p>
